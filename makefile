@@ -1,3 +1,3 @@
 all:
-	gcc server.c -g -o server
-	gcc -std=gnu11 client.c -g -o client
+	gcc -std=gnu11 server.c methods.c -g -o server
+	gcc -std=gnu11 client.c methods.c -g -o client
