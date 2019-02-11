@@ -5,8 +5,9 @@
 #include <netinet/in.h> 
 #include <string.h> 
 #include <arpa/inet.h>
-int cmpstr(char str1[], char str2[]);
+int cmpstr(char* str1, char* str2);
 char* list();
 char* readFile(char* file);
 void writeTofile(char* file, char* data);
 char* strsegment(char *str, char garbage);
+unsigned countWords(char* str);

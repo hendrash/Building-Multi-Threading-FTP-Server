@@ -6,15 +6,18 @@
 #include <netinet/in.h> 
 #include <string.h>*/
 #include "header.h"
+#include <unistd.h>
+#include <pthread.h>
 #define PORT 8080 
-
+void* clientHandler(void *socket);
 int main(int argc, char const *argv[]) 
 { 
-    int server_fd, new_socket, valread; 
+    int server_fd, new_socket;
+	    //, valread; 
     struct sockaddr_in address; 
     int opt = 1; 
     int addrlen = sizeof(address); 
-    char buffer[2048] = {0}; 
+//    char buffer[2048] = {0}; 
     char *hello = "Server successfully connected"; 
        
     // Creating socket file descriptor 
@@ -41,7 +44,10 @@ int main(int argc, char const *argv[])
     { 
         perror("bind failed"); 
         exit(EXIT_FAILURE); 
-    } 
+    }
+
+    while(1){
+    pthread_t threadID;
     if (listen(server_fd, 3) < 0) 
     { 
         perror("listen"); 
@@ -53,31 +59,60 @@ int main(int argc, char const *argv[])
         perror("accept"); 
         exit(EXIT_FAILURE); 
     }
-   printf("Enter q to exit!"); 
-    while(buffer !="q"){
-     valread = read(new_socket , buffer,2048);
-     char ptr[15];
+   	pthread_create(&threadID,NULL, clientHandler, &new_socket);
+    }
+    return 0;
+}
+    void* clientHandler(void* socket){
+    int new_socket=*(int*)socket;
+     char* buffer=malloc(256*sizeof(char)); 
+     printf("Enter q to exit!"); 
+     char* ptr=(char*)malloc(15*sizeof(char));
+     do { 
+     memset(buffer, 0, sizeof(buffer));
+     memset(ptr,0,sizeof(ptr));
+     int valread = read(new_socket , buffer,2048);
      strcpy(ptr,strtok(buffer," ")); 
-    if(cmpstr(ptr,"list")==1||cmpstr(ptr,"l")==1){
+     int len=countWords(buffer);
+     if(cmpstr(ptr,"list")==1||cmpstr(ptr,"l")==1){
      printf("Printing the current directory!");
      strcpy(buffer,list());
-     send(new_socket,buffer, strlen(buffer),0);		
+     send(new_socket,buffer, strlen(buffer),0);
+     memset(buffer, 0, sizeof(buffer));
     }
-	
+    	
     if(cmpstr(ptr,"r")==1||cmpstr(ptr,"retrieve")==1){
+     if(len==2){
      strcpy(ptr,strtok(NULL," "));
      strcpy(buffer,readFile(ptr));
      send(new_socket,buffer,strlen(buffer),0);
+     }else{
+     printf("formating error retrieving a file\n");
+     	}
+     memset(buffer, 0, sizeof(buffer));
     }
     
+    
     if(cmpstr(ptr,"s")==1||cmpstr(ptr,"store")==1){
+    if(len==2){
     strcpy(ptr, strtok(NULL, " "));
     strcpy(ptr, strtok(NULL, " "));
     strcpy(ptr,strsegment(ptr,'\n'));
     read(new_socket, buffer, 2048);
     writeTofile(ptr, buffer);
     }
+    else{
+    printf("formating error\n");
+    }
     memset(buffer, 0, sizeof(buffer));
     }
+
+    strcpy(ptr,strsegment(ptr,'\n'));
+    }while(strcmp(ptr,"q"));
+    free(buffer);
+    free(ptr);
+
+
     return 0; 
 }
+

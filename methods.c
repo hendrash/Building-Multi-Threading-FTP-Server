@@ -1,6 +1,6 @@
 #include "header.h"
 #include <dirent.h>
-int cmpstr(char str1[], char str2[]){
+int cmpstr(char* str1, char* str2){
 	int i =0;
 		while(str1[i] != '\n'&&str1[i] !='\000'&&str2[i] !='\n'&&str2[i] !='\000'){
 		if(str1[i] != str2[i]){
@@ -37,7 +37,7 @@ if(d){
 return content;
 }
 
-void writeTofile(char* file, char data[]){
+void writeTofile(char* file, char* data){
 FILE *outfile;
 outfile=fopen(file, "w");
 fprintf(outfile, "%s\n", data);
@@ -46,12 +46,11 @@ fclose(outfile);
 
 char* readFile(char file[]){
  FILE *fp;
-    char temp[2048];
-    char* str=(char *)malloc(sizeof(char)*2048);
-
+    
+char* temp=(char *)malloc(sizeof(char)*2048);
+char* str=(char *)malloc(sizeof(char)*2048);
 memset(str,0,sizeof(str));
-int i=0;
- 
+unsigned i=0;
     fp = fopen(file, "r");
     if (fp == NULL){
         printf("Could not open file %s",file);
@@ -74,4 +73,25 @@ int i=0;
 	}
 	return s;
 }
+unsigned countWords(char* str)
+{ 
+    unsigned i =0;
+    unsigned wc = 0;  // word count
 
+    // Scan all characters one by one
+    while (*str!='\n')
+    {
+        // If next character is a separator, set the
+        // state as OUT
+        if (*str == ' ' || *str == '\000' || *str == '\t')
+	wc++;
+        // If next character is not a word separator and
+        // state is OUT, then set the state as IN and
+        // increment word count
+
+        // Move to next character
+        ++str;
+    }
+
+    return wc;
+}
