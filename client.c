@@ -27,9 +27,9 @@ int main(int argc, char const *argv[])
     printf("Enter the following \n");
    
     printf("Ip address: ");
-    fgets(ipAddress, sizeof(ipAddress), stdin);
+    fgets(ipAddress, 15*sizeof(ipAddress), stdin);
     strcpy(ipAddress,strsegment(ipAddress,'\n'));
-    strncpy(ipAddress, "127.0.0.1",15);
+    //strncpy(ipAddress, "127.0.0.1",15);
     printf("\nAttempting to connect to the server\n");
     connection(ipAddress);
     }  
@@ -73,7 +73,7 @@ int connection(char *ip){
     printf("\n============================================================================\n"); 
     printf("> ");
    memset(command,0,sizeof(command));
-   fgets(command, sizeof(command), stdin); 
+   fgets(command, sizeof(command)*15, stdin); 
     send(sock , command , strlen(command) , 0); 
     char* ptr=malloc(20*sizeof(char*));
     strcpy(ptr,strtok(command," "));

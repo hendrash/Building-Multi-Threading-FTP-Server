@@ -65,6 +65,7 @@ int main(int argc, char const *argv[])
 }
     void* clientHandler(void* socket){
     int new_socket=*(int*)socket;
+    printf("Listening on socket %d\n", new_socket);
      char* buffer=malloc(256*sizeof(char)); 
      printf("Enter q to exit!"); 
      char* ptr=(char*)malloc(15*sizeof(char));
