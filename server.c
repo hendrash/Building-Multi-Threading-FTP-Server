@@ -65,20 +65,19 @@ int main(int argc, char const *argv[])
 }
     void* clientHandler(void* socket){
     int new_socket=*(int*)socket;
-     char* buffer=malloc(256*sizeof(char)); 
+     char* buffer=malloc(2048*sizeof(char)); 
      printf("Enter q to exit!"); 
      char* ptr=(char*)malloc(15*sizeof(char));
      do { 
-     memset(buffer, 0, sizeof(buffer));
-     memset(ptr,0,sizeof(ptr));
+     memset(ptr,0,15*sizeof(ptr[0]));
      int valread = read(new_socket , buffer,2048);
      strcpy(ptr,strtok(buffer," ")); 
      int len=countWords(buffer);
-     if(cmpstr(ptr,"list")==1||cmpstr(ptr,"l")==1){
+   
+    if(cmpstr(ptr,"list")==1||cmpstr(ptr,"l")==1){
      printf("Printing the current directory!");
      strcpy(buffer,list());
      send(new_socket,buffer, strlen(buffer),0);
-     memset(buffer, 0, sizeof(buffer));
     }
     	
     if(cmpstr(ptr,"r")==1||cmpstr(ptr,"retrieve")==1){
@@ -89,7 +88,6 @@ int main(int argc, char const *argv[])
      }else{
      printf("formating error retrieving a file\n");
      	}
-     memset(buffer, 0, sizeof(buffer));
     }
     
     
@@ -104,9 +102,10 @@ int main(int argc, char const *argv[])
     else{
     printf("formating error\n");
     }
-    memset(buffer, 0, sizeof(buffer));
     }
 
+    memset(buffer, 0, 2048*sizeof(buffer[0]));
+    
     strcpy(ptr,strsegment(ptr,'\n'));
     }while(strcmp(ptr,"q"));
     free(buffer);

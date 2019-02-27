@@ -27,9 +27,9 @@ int main(int argc, char const *argv[])
     printf("Enter the following \n");
    
     printf("Ip address: ");
-    fgets(ipAddress, sizeof(ipAddress), stdin);
+    fgets(ipAddress, 15*sizeof(ipAddress), stdin);
     strcpy(ipAddress,strsegment(ipAddress,'\n'));
-    strncpy(ipAddress, "127.0.0.1",15);
+ //   strncpy(ipAddress, "127.0.0.1",15);
     printf("\nAttempting to connect to the server\n");
     connection(ipAddress);
     }  
@@ -72,7 +72,7 @@ int connection(char *ip){
     printf("\n l to list the directory | r to retrieve a file | s to store a file | q to quit \n"); 
     printf("\n============================================================================\n"); 
     printf("> ");
-   memset(command,0,sizeof(command));
+   memset(command,0,50*sizeof(command[0]));
    fgets(command, sizeof(command), stdin); 
     send(sock , command , strlen(command) , 0); 
     char* ptr=malloc(20*sizeof(char*));
@@ -104,9 +104,10 @@ int connection(char *ip){
 	    printf("Formatting error from sending a file. Type:\nr <Filename> <Destination File>");
     }
    }
-    memset(buffer, 0, sizeof(buffer));
+    memset(buffer, 0, 2048*sizeof(buffer[0]));
 }while (cmpstr(command,"q")==0 && cmpstr(command, "QUIT")==0&&cmpstr(command, "quit")==0);
 send(sock,"q",strlen("q"),0);
+close(sock);
 return 0;
 }
  
