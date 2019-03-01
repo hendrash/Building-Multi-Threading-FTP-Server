@@ -21,7 +21,7 @@ struct dirent *dir;
 d=opendir(".");
 if(d){
 	strcat(content, "\n");
-	while ((dir =readdir(d)) != NULL&&str[i] !='\000')
+	while ((dir =readdir(d)) != NULL)
 	{
 		strcat(dir->d_name," 	 ");
 		strcat(content,dir->d_name);
@@ -68,7 +68,7 @@ char* strsegment(char *str, char garbage) {
 char* s=(char*)malloc(sizeof(char)*2048);
 memset(s,0,2048*sizeof(s[0]));
 int i=0;
-	while(str[i] != garbage){
+	while(str[i] != garbage && &&str[i] !='\000'){
 	s[i]=str[i];
 		i++;
 	}
