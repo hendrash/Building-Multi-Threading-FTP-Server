@@ -68,7 +68,7 @@ char* strsegment(char *str, char garbage) {
 char* s=(char*)malloc(sizeof(char)*2048);
 memset(s,0,2048*sizeof(s[0]));
 int i=0;
-	while(str[i] != garbage && &&str[i] !='\000'){
+	while(str[i] != garbage &&str[i] !='\000'){
 	s[i]=str[i];
 		i++;
 	}
