@@ -12,7 +12,8 @@ int cmpstr(char* str1, char* str2){
 }
 char* list(){
 char * content=(char *)malloc(sizeof(char)*2048);
-memset(content,0,sizeof(content));
+
+	(content,0,2048*sizeof(content[0]));
 int i=0;
 int c=0;
 DIR *d;
@@ -20,7 +21,7 @@ struct dirent *dir;
 d=opendir(".");
 if(d){
 	strcat(content, "\n");
-	while ((dir =readdir(d)) != NULL)
+	while ((dir =readdir(d)) != NULL&&str[i] !='\000')
 	{
 		strcat(dir->d_name," 	 ");
 		strcat(content,dir->d_name);
@@ -49,7 +50,7 @@ char* readFile(char file[]){
     
 char* temp=(char *)malloc(sizeof(char)*2048);
 char* str=(char *)malloc(sizeof(char)*2048);
-memset(str,0,sizeof(str));
+memset(str,0,2048*sizeof(str[0]));
 unsigned i=0;
     fp = fopen(file, "r");
     if (fp == NULL){
@@ -65,7 +66,7 @@ unsigned i=0;
 }
 char* strsegment(char *str, char garbage) {
 char* s=(char*)malloc(sizeof(char)*2048);
-memset(s,0,sizeof(s));
+memset(s,0,2048*sizeof(s[0]));
 int i=0;
 	while(str[i] != garbage){
 	s[i]=str[i];
